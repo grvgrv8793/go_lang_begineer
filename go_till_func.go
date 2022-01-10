@@ -5,16 +5,12 @@ import (
 	"strings"
 )
 
-var confName = "Go Conference"
-
-const confTickets = 50
-
-var remainingTickets uint = 50 // unit is unsigned integer so that value cant be zero
-var bookings = []string{}      // This is how we define slice, slices are subset of array but much more powerful
-
 func main() {
 
-	///confName := "Go Conference" // We can also define variables with values like this but its not possible with const
+	confName := "Go Conference" // We can also define variables with values like this but its not possible with const
+	const confTickets = 50
+	var remainingTickets uint = 50 // unit is unsigned integer so that value cant be zero
+	bookings := []string{}         // This is how we define slice, slices are subset of array but much more powerful
 
 	fmt.Printf("Data type of confName is %T\n", confName)
 
@@ -28,8 +24,12 @@ func main() {
 		isValidName, isValidEmail, isValidTicketNumber := validateUserInput(fName, lName, email, userTickets, remainingTickets)
 
 		if isValidName && isValidEmail && isValidTicketNumber {
-			////
-			bookTicket(remainingTickets, userTickets, bookings, fName, lName, email)
+			remainingTickets = remainingTickets - userTickets
+			bookings = append(bookings, fName+" "+lName) // This is how we append values to slice
+
+			fmt.Printf("Now remaining tickets are %v\n", remainingTickets)
+
+			fmt.Printf("User %v %v has booked %v tickets and it will be sent to %v mail\n", fName, lName, userTickets, email)
 
 			firstNames := getFirstName(bookings)
 			fmt.Printf("These first names of bookings are: %v\n", firstNames)
@@ -98,15 +98,4 @@ func getUserInput() (string, string, string, uint) {
 	fmt.Scan(&email)
 
 	return fName, lName, email, userTickets
-}
-
-func bookTicket(remainingTickets uint, userTickets uint, bookings []string, fName string, lName string, email string) {
-	remainingTickets = remainingTickets - userTickets
-
-	bookings = append(bookings, fName+" "+lName)
-	// This is how we append values to slice
-
-	fmt.Printf("Now remaining tickets are %v\n", remainingTickets)
-
-	fmt.Printf("User %v %v has booked %v tickets and it will be sent to %v mail\n", fName, lName, userTickets, email)
 }
